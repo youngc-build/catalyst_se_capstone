@@ -29,6 +29,12 @@ jobs:
         run: cd backend && mvn -B package --file pom.xml
       - name: Unit Test
         run: cd backend && mvn test
+      # - name: API Test
+      #   run: |
+      #     cd backend
+      #     mvn spring-boot:run &
+      #     sleep 10
+      #     mvn test -Dtest=DefectCrudTest
   # frontend:
   #   runs-on: ubuntu-latest
   #   steps:
