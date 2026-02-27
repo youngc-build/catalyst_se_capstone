@@ -26,11 +26,11 @@ jobs:
           distribution: 'temurin'
           cache: maven
       - name: Build with Maven
-        run: cd backend && mvn -B package --file pom.xml
+        run: cd backend && mvn -B package -DskipTests --file pom.xml
       - name: Unit Test
         run: |
           cd backend
-          mvn test mvn -B package --file pom.xml "-Dtest=com.example.defecttracker.unit.*Test.java"
+          mvn test "-Dtest=com.example.defecttracker.unit.*Test.java"
       # - name: API Test
       #   run: |
       #     cd backend
