@@ -28,7 +28,7 @@ jobs:
       - name: Build with Maven
         run: cd backend && mvn -B package --file pom.xml
       - name: Unit Test
-        run: mvn test
+        run: cd backend && mvn test
   # frontend:
   #   runs-on: ubuntu-latest
   #   steps:
