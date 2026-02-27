@@ -30,7 +30,7 @@ jobs:
       - name: Unit Test
         run: |
           cd backend
-          mvn test "-Dtest=com.example.defecttracker.unit.*Test.java"
+          mvn test mvn -B package --file pom.xml "-Dtest=com.example.defecttracker.unit.*Test.java"
       # - name: API Test
       #   run: |
       #     cd backend
