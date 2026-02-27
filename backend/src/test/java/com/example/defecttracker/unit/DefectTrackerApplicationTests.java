@@ -1,4 +1,4 @@
-package com.example.defecttracker;
+package com.example.defecttracker.unit;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -28,7 +28,9 @@ jobs:
       - name: Build with Maven
         run: cd backend && mvn -B package --file pom.xml
       - name: Unit Test
-        run: cd backend && mvn test
+        run: |
+          cd backend
+          mvn test "-Dtest=com.example.defecttracker.unit.*Test.java"
       # - name: API Test
       #   run: |
       #     cd backend
