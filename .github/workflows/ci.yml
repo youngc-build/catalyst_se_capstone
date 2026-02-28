@@ -46,9 +46,13 @@ jobs:
         with:
           node-version: '18'
       - name: Install dependencies
-        run: npm install
+        run: |
+          cd frontend/bug-tracker/
+          npm install
       - name: Build frontend
-        run: npm run build
+        run: |
+          npm run build
+          cd frontend/bug-tracker/
       - name: Unit Test
         run: |
           cd frontend/bug-tracker/
