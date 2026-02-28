@@ -22,16 +22,16 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import axios from 'axios'
 
 // Define a ref to hold the defects data
 const defects = ref([])
 
-// Function to fetch defects from the API
+// Function to fetch defects from the API using Axios
 const fetchDefects = async () => {
   try {
-    const response = await fetch('http://localhost:8080/api/defects')    
-    const data = await response.json()
-    defects.value = data
+    const response = await axios.get('http://localhost:8080/api/defects')
+    defects.value = response.data
   } catch (error) {
     console.error('Error fetching defects:', error)
   }
