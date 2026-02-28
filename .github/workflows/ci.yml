@@ -51,8 +51,8 @@ jobs:
           npm install
       - name: Build frontend
         run: |
-          npm run build
           cd frontend/bug-tracker/
+          npm run build
       - name: Unit Test
         run: |
           cd frontend/bug-tracker/
