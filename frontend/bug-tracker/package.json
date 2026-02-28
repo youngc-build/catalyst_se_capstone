@@ -11,6 +11,7 @@
     "test:watch": "vitest"
   },
   "dependencies": {
+    "crypto-js": "^4.2.0",
     "vue": "^3.5.29"
   },
   "devDependencies": {
