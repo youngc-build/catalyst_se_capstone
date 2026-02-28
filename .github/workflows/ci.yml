@@ -45,7 +45,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20' # or 18, match your local version
+          node-version: '22' # or 18, match your local version
           cache: 'npm'
       
       - name: Install dependencies
