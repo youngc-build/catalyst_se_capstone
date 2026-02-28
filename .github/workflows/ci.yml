@@ -48,11 +48,11 @@ jobs:
       - name: Install dependencies
         run: |
           cd frontend/bug-tracker/
-          npm install
-      - name: Build frontend
-        run: |
-          cd frontend/bug-tracker/
-          npm run build
+          npm ci
+      # - name: Build frontend
+      #   run: |
+      #     cd frontend/bug-tracker/
+      #     npm run build
       - name: Unit Test
         run: |
           cd frontend/bug-tracker/
