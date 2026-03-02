@@ -9,9 +9,6 @@ import SubmitDefects from './components/SubmitDefects.vue';
       <div class="wrapper">
         <SubmitDefects />
       </div>
-      <div class="wrapper">
-        <ListDefects />
-      </div>
     </div>
   </header>
 </template>
