@@ -5,13 +5,47 @@
         <h2>Defects</h2>
         <ul>
           <li v-for="defect in defects" :key="defect.id">
-            <strong>Title:</strong> {{ defect.title }}
-            <br />
-            <strong>Description:</strong> {{ defect.description }}
-            <br />
-            <strong>Severity:</strong> {{ defect.severity }}
-            <br />
-            <strong>Status:</strong> {{ defect.status }}
+            <div v-if="editingDefectId === defect.id" class="edit-mode">
+              <div class="form-group">
+                <label>Title:</label>
+                <input type="text" v-model="defect.title" />
+              </div>
+              <div class="form-group">
+                <label>Description:</label>
+                <textarea v-model="defect.description" rows="4"></textarea>
+              </div>
+              <div class="form-group">
+                <label>Severity:</label>
+                <select v-model="defect.severity">
+                  <option value="Low">Low</option>
+                  <option value="Medium">Medium</option>
+                  <option value="High">High</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Status:</label>
+                <select v-model="defect.status">
+                  <option value="Open">Open</option>
+                  <option value="In Progress">In Progress</option>
+                  <option value="Resolved">Resolved</option>
+                </select>
+              </div>
+              <div class="button-group">
+                <button @click="saveDefect(defect)" class="save-btn">Save</button>
+                <button @click="cancelEdit(defect.id)" class="cancel-btn">Cancel</button>
+              </div>
+            </div>
+            <div v-else class="view-mode">
+              <strong>Title:</strong> {{ defect.title }}
+              <br />
+              <strong>Description:</strong> {{ defect.description }}
+              <br />
+              <strong>Severity:</strong> {{ defect.severity }}
+              <br />
+              <strong>Status:</strong> {{ defect.status }}
+              <br />
+              <button @click="startEdit(defect.id)" class="edit-btn">Edit</button>
+            </div>
           </li>
         </ul>
       </div>
@@ -29,6 +63,9 @@ import axios from 'axios'
 // Define a ref to hold the defects data
 const defects = ref([])
 
+// Define a ref to track which defect is currently being edited
+const editingDefectId = ref(null)
+
 // Function to fetch defects from the API using Axios
 const fetchDefects = async () => {
   try {
@@ -44,6 +81,37 @@ onMounted(() => {
   fetchDefects()
 })
 
+// Function to start editing a defect
+const startEdit = (id) => {
+  editingDefectId.value = id
+}
+
+// Function to save edited defect
+const saveDefect = (defect) => {
+  // Send updated defect to server
+  axios.put(`http://localhost:8080/api/defects/${defect.id}`, defect)
+    .then(() => {
+      // Update the defect in our local state
+      const index = defects.value.findIndex(d => d.id === defect.id)
+      if (index !== -1) {
+        defects.value[index] = defect
+      }
+      // Stop editing
+      editingDefectId.value = null
+    })
+    .catch(error => {
+      console.error('Error saving defect:', error)
+      // Revert to previous state
+      editingDefectId.value = null
+    })
+}
+
+// Function to cancel editing
+const cancelEdit = (id) => {
+  // Stop editing
+  editingDefectId.value = null
+}
+
 // Define props
 defineProps({
   msg: {
@@ -56,8 +124,8 @@ defineProps({
 <style scoped>
 .container {
   padding: 20px;
-  width: 100%; /* Maximizes container width */
-  margin: 0 auto; /* Centers it if needed */
+  width: 100%;
+  margin: 0 auto;
   max-width: 700px;
 }
 
@@ -66,7 +134,7 @@ defineProps({
   border-radius: 8px;
   padding: 20px;
   margin: 20px auto;
-  width: 100%; /* Ensures it takes full width */
+  width: 100%;
 }
 
 .defects-list {
@@ -104,5 +172,95 @@ li br {
 
 li:last-child {
   border-bottom: none;
+}
+
+/* Edit mode styles */
+.edit-mode {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.form-group textarea {
+  resize: vertical;
+}
+
+/* Button group */
+.button-group {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.save-btn,
+.cancel-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.save-btn {
+  background-color: #28a745;
+  color: white;
+}
+
+.save-btn:hover {
+  background-color: #218838;
+}
+
+.cancel-btn {
+  background-color: #6c757d;
+  color: white;
+}
+
+.cancel-btn:hover {
+  background-color: #545b62;
+}
+
+/* View mode styles */
+.view-mode {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.edit-btn {
+  background-color: #007bff;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.edit-btn:hover {
+  background-color: #0056b3;
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+  .form-group {
+    width: 100%;
+  }
 }
 </style>
