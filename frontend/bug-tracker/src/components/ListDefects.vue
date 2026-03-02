@@ -45,6 +45,7 @@
               <strong>Status:</strong> {{ defect.status }}
               <br />
               <button @click="startEdit(defect.id)" class="edit-btn">Edit</button>
+              <button @click="confirmDelete(defect.id)" class="delete-btn">Delete</button>
             </div>
           </li>
         </ul>
@@ -110,6 +111,25 @@ const saveDefect = (defect) => {
 const cancelEdit = (id) => {
   // Stop editing
   editingDefectId.value = null
+}
+
+// Function to confirm delete
+const confirmDelete = (id) => {
+  // Show confirmation prompt
+  if (confirm('Are you sure you want to delete this defect?')) {
+    // Delete the defect from the API
+    axios.delete(`http://localhost:8080/api/defects/${id}`)
+      .then(() => {
+        // Remove the defect from our local state
+        const index = defects.value.findIndex(d => d.id === id)
+        if (index !== -1) {
+          defects.value.splice(index, 1)
+        }
+      })
+      .catch(error => {
+        console.error('Error deleting defect:', error)
+      })
+  }
 }
 
 // Define props
@@ -255,6 +275,19 @@ li:last-child {
 
 .edit-btn:hover {
   background-color: #0056b3;
+}
+
+.delete-btn {
+  background-color: #dc3545;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.delete-btn:hover {
+  background-color: #c82333;
 }
 
 /* Responsive design */
