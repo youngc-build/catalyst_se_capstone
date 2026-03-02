@@ -5,46 +5,32 @@ import SubmitDefects from './components/SubmitDefects.vue';
 
 <template>
   <header>
-    <!-- <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" /> -->
-
-    <div class="wrapper">
-      <SubmitDefects/>
-    </div>
-    <div class="wrapper">
-      <ListDefects/>
+    <div class="container">
+      <div class="wrapper">
+        <SubmitDefects />
+      </div>
+      <div class="wrapper">
+        <ListDefects />
+      </div>
     </div>
   </header>
-
-  <!-- <main>
-    <TheWelcome />
-  </main> -->
 </template>
 
-<!-- <style scoped>
-header {
-  line-height: 1.5;
+<style scoped>
+.container {
+  display: flex;
+  gap: 20px; /* Optional: space between components */
+  justify-content: space-between; /* Optional: distribute evenly */
+  padding: 20px;
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
+.wrapper {
+  flex: 1; /* Each component takes equal space */
+  min-width: 0; /* Prevents flex items from collapsing */
 }
 
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+/* Optional: Add some padding or margin to components */
+.wrapper > * {
+  margin: 0;
 }
-</style> -->
+</style>
