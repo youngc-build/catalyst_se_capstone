@@ -43,7 +43,7 @@ const handleSubmit = async () => {
       status: 'Open',
     }
 
-    // refresh list (this is the key part)
+    // refresh list
     await fetchDefects()
   } catch (error) {
     console.error('Error submitting defect:', error)
@@ -74,7 +74,6 @@ const saveDefect = (defect) => {
 
 const cancelEdit = () => {
   editingDefectId.value = null
-  // optional: re-fetch to discard local changes
   fetchDefects()
 }
 
@@ -94,12 +93,14 @@ const confirmDelete = (id) => {
   }
 }
 
-defineProps({
-  msg: {
-    type: String,
-    required: true,
-  },
-})
+
+const formattedDescription = (desc) => {
+    if (!desc) return '';
+    return desc
+      .replace(/\n+$/, '')   // remove trailing newlines
+      .replace(/\n/g, '<br>');
+  }
+
 </script>
 
 <template>
@@ -114,7 +115,8 @@ defineProps({
         </div>
         <div class="form-group">
           <label for="description">Description:</label>
-          <textarea id="description" v-model="newDefect.description" rows="4" required></textarea>
+          <textarea id="description" v-model="newDefect.description" rows="6" style="white-space: pre-line;"
+            placeholder="Enter description" required></textarea>
         </div>
         <div class="form-group">
           <label for="severity">Severity:</label>
@@ -149,7 +151,8 @@ defineProps({
               </div>
               <div class="form-group">
                 <label>Description:</label>
-                <textarea v-model="defect.description" rows="4"></textarea>
+                <textarea v-model="defect.description" rows="6" style="white-space: pre-line;"
+                  placeholder="Enter description"></textarea>
               </div>
               <div class="form-group">
                 <label>Severity:</label>
@@ -167,7 +170,7 @@ defineProps({
                   <option value="Resolved">Resolved</option>
                 </select>
               </div>
-              <div class="button-group">
+              <div class="button-group right-aligned">
                 <button @click="saveDefect(defect)" class="save-btn">
                   Save
                 </button>
@@ -178,15 +181,18 @@ defineProps({
             </div>
             <div v-else class="view-mode">
               <strong>Title:</strong> {{ defect.title }}<br />
-              <strong>Description:</strong> {{ defect.description }}<br />
+              <strong>Description:</strong>
+<div v-html="formattedDescription(defect.description)"></div>
               <strong>Severity:</strong> {{ defect.severity }}<br />
               <strong>Status:</strong> {{ defect.status }}<br />
-              <button @click="startEdit(defect.id)" class="edit-btn">
-                Edit
-              </button>
-              <button @click="confirmDelete(defect.id)" class="delete-btn">
-                Delete
-              </button>
+              <div class="button-group right-aligned">
+                <button @click="startEdit(defect.id)" class="edit-btn">
+                  Edit
+                </button>
+                <button @click="confirmDelete(defect.id)" class="delete-btn">
+                  Delete
+                </button>
+              </div>
             </div>
           </li>
         </ul>
@@ -303,5 +309,17 @@ button:hover {
 
 .cancel-btn:hover {
   background-color: #545b62;
+}
+
+.button-group.right-aligned {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+/* Optional: Add padding to the right for better spacing */
+.edit-mode {
+  padding-right: 16px;
 }
 </style>
