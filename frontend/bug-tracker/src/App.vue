@@ -1,5 +1,4 @@
 <script setup>
-import ListDefects from './components/ListDefects.vue';
 import SubmitDefects from './components/SubmitDefects.vue';
 </script>
 
